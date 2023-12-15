@@ -1,5 +1,4 @@
 import {Component} from 'react'
-import Cookies from 'js-cookie'
 import {Redirect} from 'react-router-dom'
 import './index.css'
 
@@ -7,8 +6,6 @@ class LoginForm extends Component {
   state = {
     username: '',
     password: '',
-    showSubmitError: '',
-    errorMsg: '',
   }
 
   onChangeUsername = event => {
@@ -19,30 +16,17 @@ class LoginForm extends Component {
     this.setState({password: event.target.value})
   }
 
-  onSubmitSuccess = jwtToken => {
+  onSubmitSuccess = () => {
     const {history} = this.props
-    Cookies.set('jwt_token', jwtToken, {expires: 30})
     history.replace('/products')
-  }
-
-  onSubmitFailure = errorMsg => {
-    this.setState({showSubmitError: true, errorMsg})
   }
 
   submitForm = async event => {
     event.preventDefault()
     const {username, password} = this.state
-    const userDetails = {username, password}
-    const response = await fetch('https://apis.ccbp.in/login', {
-      method: 'POST',
-      body: JSON.stringify(userDetails),
-    })
-    const data = await response.json()
-    if (response.ok === true) {
-      this.onSubmitSuccess(data.jwt_token)
-    } else {
-      this.onSubmitFailure(data.error_msg)
-    }
+    localStorage.setItem('username', username)
+    localStorage.setItem('password', password)
+    this.onSubmitSuccess()
   }
 
   renderPasswordField = () => {
@@ -85,9 +69,9 @@ class LoginForm extends Component {
   }
 
   render() {
-    const {showSubmitError, errorMsg} = this.state
-    const jwtToken = Cookies.get('jwt_token')
-    if (jwtToken !== undefined) {
+    const userName = localStorage.getItem('username')
+    const password = localStorage.getItem('password')
+    if (userName && password) {
       return <Redirect to="/products" />
     }
     return (
@@ -98,7 +82,6 @@ class LoginForm extends Component {
           <button type="submit" className="login-button">
             Login
           </button>
-          {showSubmitError && <p className="error-message">*{errorMsg}</p>}
         </form>
       </div>
     )

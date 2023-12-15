@@ -1,6 +1,5 @@
 import {Component} from 'react'
 import {Link} from 'react-router-dom'
-import Cookies from 'js-cookie'
 import Loader from 'react-loader-spinner'
 import CartContext from '../../context/CartContext'
 import Header from '../Header'
@@ -29,12 +28,8 @@ class ProductItemDetails extends Component {
     const {id} = params
 
     this.setState({apiStatus: apiStatusConstants.inProgress})
-    const jwtToken = Cookies.get('jwt_token')
     const apiUrl = `https://fakestoreapi.com/products/${id}`
     const options = {
-      headers: {
-        Authorization: `Bearer ${jwtToken}`,
-      },
       method: 'GET',
     }
     const response = await fetch(apiUrl, options)

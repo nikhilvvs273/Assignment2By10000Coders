@@ -1,6 +1,5 @@
 import {Component} from 'react'
 import Loader from 'react-loader-spinner'
-import Cookies from 'js-cookie'
 
 import ProductCard from '../ProductCard'
 import './index.css'
@@ -24,13 +23,9 @@ class AllProductsSection extends Component {
 
   getProducts = async () => {
     this.setState({apiStatus: apiStatusConstants.inProgress})
-    const jwtToken = Cookies.get('jwt_token')
     const apiUrl = 'https://fakestoreapi.com/products'
     const options = {
       method: 'GET',
-      headers: {
-        Authorization: `Bearer ${jwtToken}`,
-      },
     }
     const response = await fetch(apiUrl, options)
     const data = await response.json()

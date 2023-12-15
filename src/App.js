@@ -1,7 +1,6 @@
 import {Component} from 'react'
 import {Route, Switch} from 'react-router-dom'
 import LoginForm from './components/LoginForm'
-import ProtectedRoute from './components/ProtectedRoute'
 import Products from './components/Products'
 import ProductItemDetails from './components/ProductItemDetails'
 import Cart from './components/Cart'
@@ -46,13 +45,9 @@ class App extends Component {
       >
         <Switch>
           <Route exact path="/login" component={LoginForm} />
-          <ProtectedRoute exact path="/products" component={Products} />
-          <ProtectedRoute
-            exact
-            path="/products/:id"
-            component={ProductItemDetails}
-          />
-          <ProtectedRoute exact path="/cart" component={Cart} />
+          <Route exact path="/products" component={Products} />
+          <Route exact path="/products/:id" component={ProductItemDetails} />
+          <Route exact path="/cart" component={Cart} />
         </Switch>
       </CartContext.Provider>
     )
